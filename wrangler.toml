@@ -1,0 +1,5 @@
+# Cloudflare Pages project config for `wrangler pages deploy`.
+# https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+name = "miski-landing"
+pages_build_output_dir = "out"
+compatibility_date = "2026-06-03"
