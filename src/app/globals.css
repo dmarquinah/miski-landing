@@ -1,26 +1,34 @@
 @import "tailwindcss";
+@import "./theme.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Tailwind v4 design tokens (CSS-first).
+   Frozen brand palette + typography → utilities (bg-cacao, text-cream,
+   font-display, rounded-base, ease-soft). The raw var()s these reference
+   (--f-display, --accent…) live in theme.css :root.
+   ============================================================ */
+@theme {
+  --color-cacao: #2c1810;
+  --color-cacao-deep: #1e0f08;
+  --color-cacao-line: #46291c;
+  --color-salmon: #e8857a;
+  --color-pink: #f2b5ae;
+  --color-cream: #f5efe6;
+  --color-cream-2: #ece1d2;
+  --color-gold: #c79a52;
+  --color-silver: #afa79a;
+
+  --font-display: var(--f-display);
+  --font-body: var(--f-body);
+
+  --radius-base: 3px;
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
+/* The accent is runtime-switchable (the Apariencia panel sets --accent on
+   <html>). `inline` makes bg-accent/text-accent resolve to the live var at
+   use-site instead of freezing the value — so switching needs no re-render. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
 }

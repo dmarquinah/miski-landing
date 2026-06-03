@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   // Swap in a custom loader (e.g. Cloudflare Images) later if needed.
   images: {
     unoptimized: true,
+    // Unsplash stand-ins (replace with real brand photography before launch).
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
 };
 
