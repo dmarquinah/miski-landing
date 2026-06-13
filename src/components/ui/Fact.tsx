@@ -1,4 +1,4 @@
-/** Pill highlight: accent value (Fraunces italic) + label. */
+/** Pill highlight: accent value (display italic) + label. */
 export function Fact({ value, label }: { value: string; label: string }) {
   return (
     <span className="fact">

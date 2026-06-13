@@ -1,19 +1,18 @@
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
-import { ProductCard } from "./ProductCard";
-import { products } from "@/content/products";
+import { BrandMark } from "@/components/ui/BrandMark";
+import { ProductCarousel } from "./ProductCarousel";
 import { catalogo } from "@/content/site-content";
 
-/** Catalog grid (cream): 3 / 2 / 1 columns. Card treatment driven by data-card. */
+/** Catalog (cream): own title header + the product carousel below it. */
 export function Catalogo() {
   return (
-    <section className="catalog">
+    <section className="catalog" id="productos">
       <div className="wrap">
-        <SectionEyebrow>{catalogo.eyebrow}</SectionEyebrow>
-        <div className="grid">
-          {products.map((product, i) => (
-            <ProductCard key={`${product.name}-${i}`} product={product} index={i} />
-          ))}
-        </div>
+        <header className="catalog-head">
+          <BrandMark />
+          <h2>{catalogo.introTitle}</h2>
+          <p className="sub">{catalogo.introSubtitle}</p>
+        </header>
+        <ProductCarousel />
       </div>
     </section>
   );

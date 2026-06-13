@@ -1,4 +1,5 @@
 import { ResilientImage } from "@/components/ui/ResilientImage";
+import { Icon } from "@/components/ui/Icon";
 import { contacto } from "@/content/site-content";
 
 const { blocks } = contacto;
@@ -31,34 +32,33 @@ export function Contacto() {
         <div className="contact-grid">
           <div className="cblock" data-reveal>
             <h4>{blocks.social.heading}</h4>
-            {blocks.social.items.map((item) =>
-              item.type === "link" ? (
-                <a key={item.label} href={item.href} target="_blank" rel="noopener">
-                  <span className="ico">{item.icon}</span> {item.label}
-                </a>
-              ) : (
-                <span className="li" key={item.label}>
-                  <span className="ico">{item.icon}</span> {item.label}
-                </span>
-              ),
-            )}
+            {blocks.social.items.map((item) => (
+              <a
+                key={`${item.icon}-${item.label}`}
+                href={item.href}
+                target="_blank"
+                rel="noopener"
+              >
+                <Icon name={item.icon} /> {item.label}
+              </a>
+            ))}
           </div>
 
           <div className="cblock" data-reveal data-d="1">
             <h4>{blocks.phone.heading}</h4>
             <a href={blocks.phone.whatsapp.href} target="_blank" rel="noopener">
-              <span className="ico">✆</span>
+              <Icon name="whatsapp" />
               <span className="big">{blocks.phone.whatsapp.number}</span>
             </a>
             <a href={blocks.phone.call.href}>
-              <span className="ico">·</span> {blocks.phone.call.label}
+              <Icon name="phone" /> {blocks.phone.call.label}
             </a>
           </div>
 
           <div className="cblock" data-reveal data-d="2">
             <h4>{blocks.email.heading}</h4>
             <a href={blocks.email.href}>
-              <span className="ico">✉</span> {blocks.email.address}
+              <Icon name="mail" /> {blocks.email.address}
             </a>
           </div>
         </div>

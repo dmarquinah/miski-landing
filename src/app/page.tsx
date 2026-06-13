@@ -4,7 +4,6 @@ import { Nosotros } from "@/components/sections/Nosotros";
 import { QueHacemos } from "@/components/sections/QueHacemos";
 import { ComoLoHacemos } from "@/components/sections/ComoLoHacemos";
 import { Mision } from "@/components/sections/Mision";
-import { CatalogoIntro } from "@/components/sections/CatalogoIntro";
 import { Catalogo } from "@/components/sections/Catalogo";
 import { Contacto } from "@/components/sections/Contacto";
 import { Footer } from "@/components/sections/Footer";
@@ -22,7 +21,6 @@ export default function Home() {
         <DottedDivider />
         <ComoLoHacemos />
         <Mision />
-        <CatalogoIntro />
         <Catalogo />
         <Contacto />
       </main>

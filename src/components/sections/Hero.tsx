@@ -1,4 +1,4 @@
-import { Logo } from "@/components/ui/Logo";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { ResilientImage } from "@/components/ui/ResilientImage";
 import { hero } from "@/content/site-content";
 
@@ -15,14 +15,15 @@ export function Hero() {
         <ResilientImage
           id={hero.imageId}
           alt={hero.imageAlt}
-          width={1600}
+          width={2048}
           sizes="100vw"
+          priority
           fallbackLabel="Imagen principal"
-          fallbackCaption="Composición de chocolate"
+          fallbackCaption="Mazorcas de cacao peruano"
         />
       </div>
       <div className="hero-inner">
-        <Logo className="biglogo" />
+        <BrandMark className="biglogo" />
         <h1>
           {hero.title[0]}
           <br />

@@ -6,7 +6,7 @@
    Intentional deviations from the reference:
    - Paper grain overlay moved from body[data-grain] → html[data-grain] so a
      single synchronous head script can set every theme attribute on one node.
-   - Fonts come from next/font (CSS vars --font-fraunces / --font-hanken).
+   - Fonts come from next/font (CSS vars --font-jost / --font-inter).
    - No-JS / SSR reveal fallback added (html:not(.js)) so content is never
      stuck hidden when JS hasn't run.
    ============================================================ */
@@ -28,9 +28,10 @@
   --accent: var(--salmon);
   --accent-soft: var(--pink);
 
-  /* fonts (provided by next/font) */
-  --f-display: var(--font-fraunces), Georgia, serif;
-  --f-body: var(--font-hanken), system-ui, sans-serif;
+  /* fonts (provided by next/font) — Futura/TT-Hoves brochure look:
+     Jost ≈ Futura (display), Inter ≈ TT Hoves (body). */
+  --f-display: var(--font-jost), "Futura", "Century Gothic", system-ui, sans-serif;
+  --f-body: var(--font-inter), system-ui, sans-serif;
 
   /* rhythm */
   --maxw: 1180px;
@@ -167,6 +168,22 @@ html[data-grain="on"]::after {
   stroke: none;
 }
 
+/* ---------- the real brand mark (ornate Andean "M", filled vector) ----------
+   Reserved for large/medium logo moments (hero, catalog intro, footer); the
+   small inline marks keep the simpler geometric `.mark` for legibility.
+   Sized by the parent's font-size; aspect ratio preserved (mark is ~1.37:1). */
+.omark {
+  display: inline-block;
+  line-height: 0;
+  color: inherit;
+}
+.omark svg {
+  height: 1em;
+  width: auto;
+  display: block;
+  fill: currentColor;
+}
+
 /* ---------- decorative dotted divider ---------- */
 .divider {
   display: flex;
@@ -186,6 +203,12 @@ html[data-grain="on"]::after {
   width: 30px;
   height: 30px;
   opacity: 0.9;
+}
+/* the ornate brand mark is wider-than-tall, so size it by font-size instead */
+.divider .glyph.omark {
+  width: auto;
+  height: auto;
+  font-size: 30px;
 }
 .divider.full .line {
   flex: 1 1 auto;
@@ -250,7 +273,11 @@ html[data-grain="on"]::after {
   font-size: 26px;
   color: var(--cacao);
 }
-.nav.solid .brand .mark {
+.nav .brand .omark {
+  font-size: 24px;
+}
+.nav.solid .brand .mark,
+.nav.solid .brand .omark {
   color: var(--accent);
 }
 [data-hero="image"] .nav:not(.solid) .brand,
@@ -259,6 +286,14 @@ html[data-grain="on"]::after {
 }
 .nav .brand b {
   font-weight: 500;
+  transition:
+    opacity 0.4s,
+    visibility 0.4s;
+}
+/* hide the wordmark while over the hero (nav not yet solid); reveal on scroll */
+.nav:not(.solid) .brand b {
+  opacity: 0;
+  visibility: hidden;
 }
 .nav .brand span {
   font-style: italic;
@@ -849,6 +884,10 @@ html[data-grain="on"]::after {
   font-size: 52px;
   color: var(--cacao);
 }
+.catalog-intro .omark {
+  font-size: 58px;
+  color: var(--cacao);
+}
 .catalog-intro h2 {
   font-size: clamp(34px, 6vw, 76px);
   color: var(--cacao);
@@ -874,6 +913,30 @@ html[data-grain="on"]::after {
 .catalog .eyebrow {
   color: color-mix(in oklab, var(--accent) 70%, var(--cacao));
 }
+/* catalog title header (owns the product list, on cream) */
+.catalog-head {
+  text-align: center;
+  margin-bottom: clamp(28px, 5vw, 54px);
+}
+.catalog-head .omark {
+  font-size: 50px;
+  color: var(--accent);
+}
+.catalog-head h2 {
+  font-size: clamp(34px, 6vw, 72px);
+  color: var(--cacao);
+  margin-top: 0.12em;
+  letter-spacing: -0.01em;
+}
+.catalog-head .sub {
+  font-family: var(--f-body);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 12.5px;
+  color: color-mix(in oklab, var(--accent) 65%, var(--cacao));
+  margin-top: 1em;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -888,6 +951,323 @@ html[data-grain="on"]::after {
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* —— product sections (one alternating spread per product) —— */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(58px, 9vw, 124px);
+  margin-top: clamp(40px, 6vw, 70px);
+}
+.product .media .tick {
+  border-color: var(--accent);
+}
+/* origin pill + medals sit over the framed photo */
+.product .origin {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 13px;
+  border-radius: 999px;
+  color: var(--white);
+  backdrop-filter: blur(3px);
+}
+.product .origin.vraem {
+  background: color-mix(in oklab, var(--cacao) 78%, transparent);
+}
+.product .origin.piura {
+  background: color-mix(in oklab, #7a4a2a 80%, transparent);
+}
+.product .medalrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  display: flex;
+  gap: 6px;
+}
+.product .medalrow i {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--f-body);
+  font-style: normal;
+  color: var(--cacao);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.product .medalrow i.gold {
+  background: radial-gradient(circle at 35% 30%, #f0d28a, var(--gold));
+}
+.product .medalrow i.silver {
+  background: radial-gradient(circle at 35% 30%, #e9e6e0, var(--silver));
+}
+/* product copy column */
+.product .copy {
+  position: relative;
+  max-width: 52ch;
+}
+.product .p-index {
+  display: block;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: clamp(30px, 4.4vw, 50px);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.45;
+  margin-bottom: 10px;
+}
+.product .eyebrow {
+  color: color-mix(in oklab, var(--accent) 72%, var(--cacao));
+}
+.product .s-title {
+  margin: 0.2em 0 0.08em;
+}
+.product .psub {
+  display: block;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: clamp(17px, 2vw, 21px);
+  opacity: 0.72;
+}
+.product .pdesc {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.62;
+  opacity: 0.84;
+}
+.product .ingr {
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  opacity: 0.7;
+}
+.product .ingr b {
+  font-weight: 600;
+  opacity: 0.92;
+}
+.product .benefits {
+  margin-top: 18px;
+}
+.product .fmt {
+  margin-top: 24px;
+}
+.product .fmt span {
+  display: inline-block;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--cacao) 18%, transparent);
+}
+
+/* —— product carousel (bounded horizontal slider) —— */
+.pcar {
+  margin-top: clamp(34px, 5vw, 56px);
+}
+.pcar-view {
+  overflow: hidden;
+  border-radius: var(--radius);
+  outline: none;
+}
+.pcar-view:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 55%, transparent);
+}
+.pcar-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+  will-change: transform;
+}
+.pcar-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  padding: 14px;
+}
+.pcar-slide .product {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 70px);
+  align-items: center;
+}
+.pcar .frame.tall {
+  aspect-ratio: auto;
+  height: min(60vh, 540px);
+}
+.pcar .frame {
+  box-shadow: 0 16px 36px -22px rgba(44, 24, 16, 0.55);
+}
+.pcar .s-title {
+  font-size: clamp(30px, 4vw, 50px);
+}
+@media (max-width: 840px) {
+  .pcar-slide .product {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .pcar .frame.tall {
+    height: 44vh;
+  }
+}
+
+/* arrows (live in the control bar below the slides) */
+.pcar-arrow {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 0;
+  background: var(--cacao);
+  color: var(--cream);
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition:
+    transform 0.25s,
+    background 0.25s,
+    color 0.25s,
+    opacity 0.25s;
+}
+.pcar-arrow:hover:not(:disabled) {
+  transform: scale(1.08);
+  background: var(--accent);
+  color: var(--cacao);
+}
+.pcar-arrow:disabled {
+  opacity: 0.26;
+  cursor: default;
+}
+
+/* format pill + buy button */
+.pcar-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 26px;
+}
+.pcar-foot .fmt {
+  margin-top: 0;
+}
+.pbuy {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--accent);
+  color: var(--cacao);
+  font-family: var(--f-body);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: 13.5px;
+  padding: 12px 21px;
+  border-radius: 999px;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s,
+    gap 0.25s;
+}
+.pbuy:hover {
+  transform: translateY(-2px);
+  gap: 13px;
+  box-shadow: 0 16px 32px -14px var(--accent);
+}
+/* base size for inline SVG icons; .cblock overrides opacity/size below */
+.ico {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.pbuy .ico {
+  width: 17px;
+  height: 17px;
+}
+
+/* control bar: prev — segmented progress — next */
+.pcar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+.pcar-bars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  max-width: 620px;
+}
+.pcar-bar {
+  position: relative;
+  flex: 1 1 0;
+  height: 5px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in oklab, var(--cacao) 14%, transparent);
+  overflow: hidden;
+  transition: background 0.25s;
+}
+.pcar-bar:hover {
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
+}
+.pcar-bar.active {
+  background: color-mix(in oklab, var(--cacao) 22%, transparent);
+}
+.pcar-bar .fill {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: var(--accent);
+  border-radius: 999px;
+}
+/* the active segment fills over the autoplay interval, synced to the timer */
+.pcar-bar.active .fill {
+  animation: pcar-fill 5000ms linear forwards;
+}
+.pcar-bar.active.is-paused .fill {
+  animation-play-state: paused;
+}
+@keyframes pcar-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@media (max-width: 560px) {
+  .pcar-controls {
+    gap: 12px;
+  }
+  .pcar-arrow {
+    width: 42px;
+    height: 42px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pcar-track {
+    transition: none;
+  }
+  .pcar-bar.active .fill {
+    animation: none;
+    width: 100%;
   }
 }
 
@@ -1159,7 +1539,19 @@ html[data-grain="on"]::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(30, 15, 8, 0.86), rgba(30, 15, 8, 0.93));
+  /* lighter overlay so the origin photo is appreciable behind the contact data */
+  background: linear-gradient(
+    180deg,
+    rgba(30, 15, 8, 0.42) 0%,
+    rgba(30, 15, 8, 0.55) 45%,
+    rgba(30, 15, 8, 0.82) 100%
+  );
+}
+/* keep text legible over the lighter photo */
+.contact .anay h2,
+.contact .anay p,
+.contact-grid {
+  text-shadow: 0 1px 16px rgba(18, 9, 4, 0.5);
 }
 .contact .wrap {
   position: relative;
@@ -1277,6 +1669,11 @@ html[data-grain="on"]::after {
   font-size: 40px;
   color: var(--accent);
   opacity: 0.85;
+}
+.footer .omark {
+  font-size: 46px;
+  color: var(--accent);
+  opacity: 0.9;
 }
 .footer .ftag {
   font-family: var(--f-display);

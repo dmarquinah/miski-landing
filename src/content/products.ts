@@ -1,7 +1,8 @@
 /**
  * Product catalog (es-PE) — presentational only, no e-commerce in this phase.
- * Ported verbatim from design_handoff/reference/miski.js `PRODUCTS`.
- * `img` is an Unsplash photo id (or null → striped placeholder).
+ * Copy, formats, ingredients and awards transcribed from the official brochure
+ * ("BROCHURE MISKI WARMI"). Photos are real brand shots extracted from the same
+ * brochure and stored under `public/products/` (referenced by absolute path).
  */
 
 export type Medal = "gold" | "silver";
@@ -14,6 +15,7 @@ export type Product = {
   desc: string;
   ingr: string;
   fmt: string;
+  /** Local asset path under /public (e.g. "/products/nibs-cacao.jpg"), or null → striped placeholder. */
   img: string | null;
   medals?: Medal[];
   benefits?: string[];
@@ -22,7 +24,7 @@ export type Product = {
 
 export const MEDAL_LABEL: Record<Medal, string> = { gold: "Oro", silver: "Plata" };
 
-export const AWARD_EVENT = "Salón Cacao y Chocolate 2025";
+export const AWARD_EVENT = "Salón de Cacao y Chocolate 2025";
 
 export const products: Product[] = [
   {
@@ -30,51 +32,51 @@ export const products: Product[] = [
     origin: "vraem",
     name: "Pasta de cacao 100%",
     sub: "Chocolate para taza",
-    desc: "Cacao puro, sin nada más. Para preparar a la antigua, espeso y reconfortante.",
-    ingr: "Pasta de cacao nativo del VRAEM.",
+    desc: "Pasta de cacao al 100% finamente molida y de granos nativos selectos. Perfecta para preparar chocolate caliente o con leche y disfrutar en compañía. La cajita se abre como retablo Ayacuchano.",
+    ingr: "Pasta de cacao nativo del Vraem.",
     fmt: "Tableta 80 g",
-    img: "1606312619070-d48b4c652a52",
+    img: "/products/pasta-cacao-100.jpg",
   },
   {
     cat: "Cacao nativo — VRAEM",
     origin: "vraem",
     name: "Chocolate 70%",
     sub: "Endulzado con panela",
-    desc: "Intenso y equilibrado, con la dulzura justa de la panela orgánica.",
-    ingr: "Pasta de cacao nativo del Vraem, panela orgánica, manteca de cacao.",
+    desc: "Delicioso chocolate oscuro al 70% de cacao del VRAEM endulzado con panela orgánica de Piura. Eleva tu estado de ánimo. La cajita se abre como retablo Ayacuchano.",
+    ingr: "Pasta de cacao nativo del Vraem, panela orgánica y manteca de cacao.",
     fmt: "Tableta 40 g",
-    img: "1614088685112-0a760b71a3c8",
+    img: "/products/chocolate-70-40g.jpg",
   },
   {
     cat: "Cacao nativo — VRAEM",
     origin: "vraem",
     name: "Chocolate 70%",
     sub: "Edulcorado con panela",
-    desc: "El mismo carácter del 70%, en formato de bolsillo para llevar contigo.",
-    ingr: "Pasta de cacao nativo del Vraem, panela orgánica, manteca de cacao.",
+    desc: "El mismo chocolate oscuro al 70% de cacao del VRAEM, endulzado con panela orgánica de Piura, en formato de bolsillo para llevar contigo. Eleva tu estado de ánimo.",
+    ingr: "Pasta de cacao nativo del Vraem, panela orgánica y manteca de cacao.",
     fmt: "Tableta 20 g",
-    img: "1623660053975-cf75a8be0908",
+    img: "/products/chocolate-70-20g.jpg",
   },
   {
     cat: "Cacao blanco — Piura",
     origin: "piura",
     name: "Chocolate 65%",
-    sub: "Cacao blanco",
-    desc: "Notas suaves y afrutadas del raro cacao blanco piurano.",
-    ingr: "Pasta de cacao blanco de Piura, panela orgánica, manteca de cacao.",
+    sub: "Endulzado con panela",
+    desc: "Delicioso chocolate oscuro al 65% de cacao blanco edulcorado con panela orgánica de Piura. Eleva tu estado de ánimo. Chocolate ganador Silver del Salón de Cacao y Chocolate 2025.",
+    ingr: "Pasta de cacao blanco de Piura, panela orgánica y manteca de cacao.",
     fmt: "Tableta 40 g",
-    img: "1548907040-4baa42d10919",
+    img: "/products/chocolate-65-piura.jpg",
     medals: ["silver"],
   },
   {
     cat: "Cacao blanco — Piura",
     origin: "piura",
     name: "Chocolate 72%",
-    sub: "Cacao blanco",
-    desc: "Nuestra joya premiada: profundidad y elegancia del cacao blanco.",
-    ingr: "Pasta de cacao blanco de Piura, panela orgánica, manteca de cacao.",
+    sub: "Endulzado con panela",
+    desc: "Delicioso chocolate oscuro al 72% de cacao blanco endulzado con panela orgánica de Piura. Eleva tu estado de ánimo. Chocolate ganador Silver y Gold del Salón de Cacao y Chocolate 2025.",
+    ingr: "Pasta de cacao blanco de Piura, panela orgánica y manteca de cacao.",
     fmt: "Tableta 40 g",
-    img: "1549007994-cb92caebd54b",
+    img: "/products/chocolate-72-piura.jpg",
     medals: ["silver", "gold"],
   },
   {
@@ -82,32 +84,75 @@ export const products: Product[] = [
     origin: "vraem",
     name: "Grageas 60%",
     sub: "Arándanos",
-    desc: "Arándanos orgánicos envueltos en chocolate. El antojo que sí cuida.",
-    ingr: "Arándanos orgánicos, pasta de cacao, panela, manteca de cacao.",
+    desc: "Arándanos orgánicos bañados de chocolate al 60% de cacao del VRAEM endulzado con panela. El antojo que sí cuida.",
+    ingr: "Arándanos orgánicos, pasta de cacao, panela y manteca de cacao.",
     fmt: "Dolpack 40 g",
-    img: "1481391319762-47dff72954d9",
+    img: "/products/grageas-arandanos.jpg",
   },
   {
     cat: "Cacao nativo — VRAEM",
     origin: "vraem",
     name: "Grageas 60%",
     sub: "Almendras",
-    desc: "Almendras crocantes y chocolate de cacao nativo. Para compartir.",
-    ingr: "Almendras orgánicas, pasta de cacao, panela, manteca de cacao.",
+    desc: "Almendras orgánicas bañadas de chocolate al 60% de cacao del VRAEM endulzado con panela. Crocantes, para compartir.",
+    ingr: "Almendras orgánicas, pasta de cacao, panela y manteca de cacao.",
     fmt: "Dolpack 40 g",
-    img: "1599599810769-bcde5a160d32",
+    img: "/products/grageas-almendras.jpg",
+  },
+  {
+    cat: "Cacao nativo — VRAEM",
+    origin: "vraem",
+    name: "Nibs de cacao",
+    sub: "Trozos de cacao tostado",
+    desc: "Trocitos de granos de cacao tostados, cuidadosamente seleccionados, previamente limpiados y descascarados, muy ricos en magnesio y antioxidantes. Recomendado para un snack saludable y delicioso.",
+    ingr: "Granos de cacao nativo del Vraem.",
+    fmt: "Dolpack 150 g",
+    img: "/products/nibs-cacao.jpg",
+    benefits: ["Fortalece el corazón", "Mejora el ánimo", "Saludable para la piel"],
+  },
+  {
+    cat: "Cacao nativo — VRAEM",
+    origin: "vraem",
+    name: "Polvo de cacao",
+    sub: "Cacao instantáneo",
+    desc: "Polvo de cacao proveniente de granos selectos, reducido en grasa y pulverizado. Ideal para preparar postres, bebidas instantáneas, batidos y compartir con los que más quieres.",
+    ingr: "Granos de cacao nativos del Vraem.",
+    fmt: "Dolpack 200 g",
+    img: "/products/polvo-cacao.jpg",
+    benefits: ["Fortalece el corazón", "Mejora el ánimo", "Saludable para la piel"],
   },
   {
     cat: "Cáscara de cacao tostada — VRAEM",
     origin: "vraem",
     name: "Infusión Andina",
-    sub: "Cáscara de cacao",
-    desc: "Una infusión cálida hecha de la cáscara tostada del cacao nativo.",
+    sub: "Cascarilla de cacao tostado",
+    desc: "Cáscara de cacao del VRAEM, alta en antioxidantes; una excelente opción para los amantes de las infusiones, un té de sabor achocolatado.",
     ingr: "Cáscara de cacao nativo del Vraem.",
     fmt: "Dolpack 100 g",
-    img: null,
-    phcap: "Infusión de cáscara de cacao",
-    benefits: ["Antiinflamatoria", "Concilia el sueño", "Mejora la digestión"],
+    img: "/products/infusion-andina.jpg",
+    benefits: ["Combate el insomnio", "Mejora la digestión", "Antiinflamatorio"],
+  },
+  {
+    cat: "Cáscara de cacao tostada — VRAEM",
+    origin: "vraem",
+    name: "Mix Andino",
+    sub: "Cáscara de cacao, menta y canela",
+    desc: "Cáscara de cacao del VRAEM, alta en antioxidantes, con hojas de menta y canela selecta. Excelente opción para los amantes de las infusiones, un té con sabor a los Andes.",
+    ingr: "Cáscara de cacao, menta y canela.",
+    fmt: "Dolpack 100 g",
+    img: "/products/mix-andino.jpg",
+    benefits: ["Cascarilla de cacao", "Hojas de menta", "Palitos de canela"],
+  },
+  {
+    cat: "Cacao nativo — VRAEM",
+    origin: "vraem",
+    name: "Miskitejas",
+    sub: "Chocoteja 60% cacao",
+    desc: "Chocoteja elaborada al 60% de cacao del VRAEM endulzada con panela, rellena con pralinés de diferentes sabores. Incluye un sticker ilustrativo en Quechua, en homenaje al idioma de nuestras cacaocultoras quechuahablantes.",
+    ingr: "Pasta de cacao, manteca de cacao, panela y praliné.",
+    fmt: "Peso neto 10 g",
+    img: "/products/miskitejas.jpg",
+    benefits: ["Praliné de maní", "Praliné de almendras", "Praliné de pecanas"],
   },
 ];
 

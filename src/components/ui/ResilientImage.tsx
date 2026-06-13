@@ -6,9 +6,10 @@ import { unsplashUrl } from "@/lib/images";
 import { StripedPlaceholder } from "./StripedPlaceholder";
 
 /**
- * Cover image for the framed media slots. Loads an Unsplash stand-in via
- * next/image (unoptimized for static export) and, if it fails, swaps to the
- * striped placeholder — preserving the reference's onError resilience.
+ * Cover image for the framed media slots. Loads either a local asset (any `id`
+ * starting with "/", e.g. "/products/nibs-cacao.jpg") or an Unsplash stand-in
+ * (bare photo id) via next/image (unoptimized for static export) and, if it
+ * fails, swaps to the striped placeholder — preserving the onError resilience.
  *
  * Renders with `fill`, so the parent must be positioned (the .frame/.pic/.bg
  * wrappers already are) and define the box size.
@@ -36,9 +37,13 @@ export function ResilientImage({
     return <StripedPlaceholder label={fallbackLabel} caption={fallbackCaption ?? alt} />;
   }
 
+  // Local assets (under /public) are referenced by absolute path; everything
+  // else is treated as an Unsplash photo id and run through the URL builder.
+  const src = id.startsWith("/") ? id : unsplashUrl(id, width);
+
   return (
     <Image
-      src={unsplashUrl(id, width)}
+      src={src}
       alt={alt}
       fill
       sizes={sizes}

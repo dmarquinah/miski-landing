@@ -1,5 +1,5 @@
 import { MediaFrame } from "@/components/ui/MediaFrame";
-import { StripedPlaceholder } from "@/components/ui/StripedPlaceholder";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { nosotros } from "@/content/site-content";
 
@@ -10,9 +10,11 @@ export function Nosotros() {
       <div className="wrap">
         <div className="story">
           <MediaFrame variant="tall">
-            <StripedPlaceholder
-              label={nosotros.placeholder.label}
-              caption={nosotros.placeholder.caption}
+            <ResilientImage
+              id={nosotros.imageId}
+              alt={nosotros.imageAlt}
+              fallbackLabel={nosotros.placeholder.label}
+              fallbackCaption={nosotros.placeholder.caption}
             />
           </MediaFrame>
           <div className="copy" data-reveal data-d="1">

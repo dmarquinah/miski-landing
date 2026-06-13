@@ -1,5 +1,5 @@
 import { MediaFrame } from "@/components/ui/MediaFrame";
-import { StripedPlaceholder } from "@/components/ui/StripedPlaceholder";
+import { ResilientImage } from "@/components/ui/ResilientImage";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { mision } from "@/content/site-content";
 
@@ -10,9 +10,11 @@ export function Mision() {
       <div className="wrap">
         <div className="story rev">
           <MediaFrame variant="wide" delay={1}>
-            <StripedPlaceholder
-              label={mision.placeholder.label}
-              caption={mision.placeholder.caption}
+            <ResilientImage
+              id={mision.imageId}
+              alt={mision.imageAlt}
+              fallbackLabel={mision.placeholder.label}
+              fallbackCaption={mision.placeholder.caption}
             />
           </MediaFrame>
           <div className="copy" data-reveal>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Logo } from "@/components/ui/Logo";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { nav } from "@/content/site-content";
 import { siteConfig } from "@/lib/site";
 
@@ -45,7 +45,7 @@ export function Header() {
     <>
       <header className={solid ? "nav solid" : "nav"} id="nav">
         <a className="brand" href="#top">
-          <Logo />
+          <BrandMark />
           <b>{siteConfig.name}</b>
           <span>{nav.brandTagline}</span>
         </a>

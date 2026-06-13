@@ -22,7 +22,7 @@ export type Appearance = {
 };
 
 export const DEFAULT_APPEARANCE: Appearance = {
-  hero: "centered",
+  hero: "image",
   card: "editorial",
   accent: "salmon",
   motif: "moderate",

@@ -1,29 +1,30 @@
 import type { Metadata } from "next";
-import { Fraunces, Hanken_Grotesk } from "next/font/google";
+import { Jost, Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig, siteUrl } from "@/lib/site";
-import { AppearanceProvider } from "@/components/theme/AppearanceProvider";
-import { AppearancePanel } from "@/components/theme/AppearancePanel";
+import { products } from "@/content/products";
 import { ClientEffects } from "@/components/theme/ClientEffects";
 import { DEFAULT_APPEARANCE } from "@/components/theme/appearance";
 
-// Display: Fraunces (variable, with optical-sizing axis + italics).
-const fraunces = Fraunces({
+// Display: Jost (variable, with italics) — a geometric sans matching the
+// brochure's Futura LT Pro headings/wordmark.
+const jost = Jost({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-fraunces",
-  axes: ["opsz"],
+  variable: "--font-jost",
   style: ["normal", "italic"],
 });
 
-// Body/UI: Hanken Grotesque (variable — full weight range incl. 380).
-const hanken = Hanken_Grotesk({
+// Body/UI: Inter (variable) — a neo-grotesque matching the brochure's TT Hoves.
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-hanken",
+  variable: "--font-inter",
 });
 
-const lang = siteConfig.locale.split("_")[0];
+const lang = siteConfig.locale.replace("_", "-");
+
+const ogImageUrl = `${siteUrl}${siteConfig.ogImage}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,19 +34,33 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  keywords: [...siteConfig.keywords],
+  authors: [{ name: siteConfig.name, url: siteUrl }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  category: "food",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
     url: siteUrl,
     siteName: siteConfig.name,
-    title: siteConfig.title,
+    title: siteConfig.socialTitle,
     description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.brandSlogan}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.title,
+    title: siteConfig.socialTitle,
     description: siteConfig.description,
+    images: [siteConfig.ogImage],
     ...(siteConfig.twitter ? { site: siteConfig.twitter, creator: siteConfig.twitter } : {}),
   },
   robots: {
@@ -61,29 +76,68 @@ export const metadata: Metadata = {
   },
 };
 
-// Synchronous no-flash script: applies the owner's persisted appearance to
-// <html> before first paint (and flags `js` so the no-JS reveal fallback yields).
-const NO_FLASH = `(function(){try{var d=document.documentElement;d.classList.add('js');var A={salmon:['#E8857A','#F2B5AE'],terracotta:['#C96A4B','#E59B7E'],rosa:['#F2B5AE','#F7CFC9']};var s=localStorage.getItem('mw-appearance');if(!s)return;var t=JSON.parse(s);if(t.hero)d.setAttribute('data-hero',t.hero);if(t.card)d.setAttribute('data-card',t.card);if(t.motif)d.setAttribute('data-motif',t.motif);d.setAttribute('data-grain',t.grain?'on':'off');var a=A[t.accent]||A.salmon;d.style.setProperty('--accent',a[0]);d.style.setProperty('--accent-soft',a[1]);}catch(e){}})();`;
+// The look is fixed (see the html data-* attributes from DEFAULT_APPEARANCE +
+// the CSS accent). This only flags `js` so the no-JS reveal fallback yields.
+const NO_FLASH = `(function(){try{document.documentElement.classList.add('js');}catch(e){}})();`;
 
-// Organization structured data for rich search results.
+// Structured data (Organization + WebSite + product catalog) for rich results.
+const ORG_ID = `${siteUrl}/#organization`;
+
 const JSON_LD = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: siteConfig.name,
-  url: siteUrl,
-  description: siteConfig.description,
-  sameAs: [
-    "https://instagram.com/miskiwarmi.peru",
-    "https://instagram.com/miskitejas.peru",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ORG_ID,
+      name: siteConfig.name,
+      alternateName: siteConfig.alternateName,
+      url: siteUrl,
+      logo: `${siteUrl}/icons/icon-512.png`,
+      image: ogImageUrl,
+      description: siteConfig.description,
+      slogan: siteConfig.brandSlogan,
+      email: "miskiwarmi.pe@gmail.com",
+      telephone: "+51940250927",
+      knowsAbout: [...siteConfig.keywords],
+      areaServed: "PE",
+      foundingLocation: { "@type": "Place", name: "Perú" },
+      sameAs: [
+        "https://www.instagram.com/miskiwarmi.peru/",
+        "https://www.instagram.com/miskitejas.peru/",
+        "https://www.tiktok.com/@miskiwarmi.peru",
+        "https://www.tiktok.com/@miskitejas.peru",
+        "https://www.facebook.com/miskiwarmiperu",
+        "https://www.facebook.com/people/Miskitejas/61580276864182/",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+51940250927",
+        email: "miskiwarmi.pe@gmail.com",
+        contactType: "customer service",
+        areaServed: "PE",
+        availableLanguage: "es",
+      },
+      makesOffer: products.map((p) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Product",
+          name: `${p.name} — ${p.sub}`,
+          category: p.cat,
+          description: p.desc,
+          brand: { "@id": ORG_ID },
+        },
+      })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: siteConfig.name,
+      description: siteConfig.description,
+      inLanguage: siteConfig.locale.replace("_", "-"),
+      publisher: { "@id": ORG_ID },
+    },
   ],
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+51940250927",
-    email: "miskiwarmi.pe@gmail.com",
-    contactType: "customer service",
-    areaServed: "PE",
-    availableLanguage: "es",
-  },
 };
 
 export default function RootLayout({
@@ -98,7 +152,7 @@ export default function RootLayout({
       data-card={DEFAULT_APPEARANCE.card}
       data-motif={DEFAULT_APPEARANCE.motif}
       data-grain={DEFAULT_APPEARANCE.grain ? "on" : "off"}
-      className={`${fraunces.variable} ${hanken.variable}`}
+      className={`${jost.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <body>
@@ -107,11 +161,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
-        <AppearanceProvider>
-          <ClientEffects />
-          {children}
-          <AppearancePanel />
-        </AppearanceProvider>
+        <ClientEffects />
+        {children}
       </body>
     </html>
   );

@@ -5,11 +5,37 @@
  */
 export const siteConfig = {
   name: "Miski Warmi",
-  // Full home <title>. Keyword-rich for SEO.
-  title: "Miski Warmi — Dulzura que cuida | Chocolates de cacao peruano",
-  // Meta description (ported from the design reference).
+  // Brand alternate name (used in structured data).
+  alternateName: "Chocolates Miski Warmi",
+  brandSlogan: "Dulzura que cuida",
+  // Home <title> (browser tab + Google headline). Brand + slogan up front for
+  // identity, plus the primary keyword for ranking. ~60 chars so it isn't cut.
+  title: "Miski Warmi — Dulzura que cuida · Chocolate de cacao peruano",
+  // Cleaner brand-only title for social-share cards (no keywords needed there).
+  socialTitle: "Miski Warmi — Dulzura que cuida",
+  // Meta description (~150 chars): compelling + keyword-rich for SERP snippets.
   description:
-    "Chocolates premium de cacao nativo del VRAEM y cacao blanco de Piura, endulzados con panela. Impulsamos la autonomía económica de las mujeres en la cadena del cacao.",
+    "Chocolate de cacao nativo peruano, premiado y endulzado con panela. Elaborado a microbatch por mujeres cacaocultoras del VRAEM y de Piura.",
+  // Target search terms (es-PE). Outputs <meta name="keywords"> + JSON-LD knowsAbout.
+  keywords: [
+    "chocolate peruano",
+    "cacao nativo",
+    "chocolate de cacao nativo",
+    "cacao del VRAEM",
+    "cacao blanco de Piura",
+    "chocolate artesanal",
+    "chocolate orgánico",
+    "chocolate sin azúcar refinada",
+    "chocolate endulzado con panela",
+    "chocolate premiado Perú",
+    "pasta de cacao",
+    "nibs de cacao",
+    "bean to bar Perú",
+    "chocotejas",
+    "Miski Warmi",
+  ],
+  // Social-share (Open Graph / Twitter) card, 1200×630.
+  ogImage: "/og.jpg",
   // Canonical production URL. Override per-environment with NEXT_PUBLIC_SITE_URL.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://miskiwarmi.com",
   // BCP-47 locale used for <html lang> and Open Graph locale.
