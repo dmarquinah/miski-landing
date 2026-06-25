@@ -24,11 +24,7 @@ export function Hero() {
       </div>
       <div className="hero-inner">
         <BrandMark className="biglogo" />
-        <h1>
-          {hero.title[0]}
-          <br />
-          {hero.title[1]}
-        </h1>
+        <h1>{hero.title.join(" ")}</h1>
         <p className="tagline">{hero.tagline}</p>
       </div>
       <a className="scrolldown" href="#nosotros">

@@ -1,25 +1,29 @@
 import type { Metadata } from "next";
-import { Jost, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { siteConfig, siteUrl } from "@/lib/site";
 import { products } from "@/content/products";
 import { ClientEffects } from "@/components/theme/ClientEffects";
 import { DEFAULT_APPEARANCE } from "@/components/theme/appearance";
 
-// Display: Jost (variable, with italics) — a geometric sans matching the
-// brochure's Futura LT Pro headings/wordmark.
-const jost = Jost({
-  subsets: ["latin"],
+// Display: Futura Hv BT (Heavy) — the brand's headline/wordmark face.
+// Single static weight; the declared range maps every requested weight to this
+// one face so the browser never faux-bolds it. No italic file ships, so the
+// occasional display italic in the design renders as a synthesized oblique.
+const futuraDisplay = localFont({
+  src: "./fonts/FuturaHvBT-Heavy.ttf",
   display: "swap",
-  variable: "--font-jost",
-  style: ["normal", "italic"],
+  variable: "--font-display",
+  weight: "100 900",
 });
 
-// Body/UI: Inter (variable) — a neo-grotesque matching the brochure's TT Hoves.
-const inter = Inter({
-  subsets: ["latin"],
+// Body/UI: Futura Md BT — the brand's text face. Same single-weight mapping so
+// medium/semibold UI labels reuse the one physical weight without synthesis.
+const futuraBody = localFont({
+  src: "./fonts/FuturaMdBT.otf",
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-body",
+  weight: "100 900",
 });
 
 const lang = siteConfig.locale.replace("_", "-");
@@ -152,7 +156,7 @@ export default function RootLayout({
       data-card={DEFAULT_APPEARANCE.card}
       data-motif={DEFAULT_APPEARANCE.motif}
       data-grain={DEFAULT_APPEARANCE.grain ? "on" : "off"}
-      className={`${jost.variable} ${inter.variable}`}
+      className={`${futuraDisplay.variable} ${futuraBody.variable}`}
       suppressHydrationWarning
     >
       <body>

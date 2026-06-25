@@ -1,8 +1,10 @@
 import { BrandMark } from "@/components/ui/BrandMark";
-import { ProductCarousel } from "./ProductCarousel";
+import { ProductCard } from "./ProductCard";
+import { products } from "@/content/products";
 import { catalogo } from "@/content/site-content";
 
-/** Catalog (cream): own title header + the product carousel below it. */
+/** Catalog (cream): own title header + the product grid below it
+ *  (4-up on desktop, 2-up on mobile — see `.grid` in theme.css). */
 export function Catalogo() {
   return (
     <section className="catalog" id="productos">
@@ -12,7 +14,15 @@ export function Catalogo() {
           <h2>{catalogo.introTitle}</h2>
           <p className="sub">{catalogo.introSubtitle}</p>
         </header>
-        <ProductCarousel />
+        <div className="grid">
+          {products.map((product, index) => (
+            <ProductCard
+              key={`${product.name}-${product.sub}-${index}`}
+              product={product}
+              index={index}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

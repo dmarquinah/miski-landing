@@ -8,6 +8,7 @@ import { Catalogo } from "@/components/sections/Catalogo";
 import { Contacto } from "@/components/sections/Contacto";
 import { Footer } from "@/components/sections/Footer";
 import { DottedDivider } from "@/components/ui/DottedDivider";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 
 export default function Home() {
   return (
@@ -15,16 +16,17 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <Catalogo />
         <Nosotros />
         <DottedDivider />
         <QueHacemos />
         <DottedDivider />
         <ComoLoHacemos />
         <Mision />
-        <Catalogo />
         <Contacto />
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </>
   );
 }

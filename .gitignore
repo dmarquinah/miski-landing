@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# source font archives (the extracted faces live in src/app/fonts/)
+*.zip
+
 # debug
 npm-debug.log*
 yarn-debug.log*

@@ -28,10 +28,10 @@
   --accent: var(--salmon);
   --accent-soft: var(--pink);
 
-  /* fonts (provided by next/font) — Futura/TT-Hoves brochure look:
-     Jost ≈ Futura (display), Inter ≈ TT Hoves (body). */
-  --f-display: var(--font-jost), "Futura", "Century Gothic", system-ui, sans-serif;
-  --f-body: var(--font-inter), system-ui, sans-serif;
+  /* fonts (provided by next/font/local) — the brand's actual Futura faces:
+     Futura Hv BT (display/headlines), Futura Md BT (body/UI). */
+  --f-display: var(--font-display), "Futura", "Century Gothic", system-ui, sans-serif;
+  --f-body: var(--font-body), "Futura", "Century Gothic", system-ui, sans-serif;
 
   /* rhythm */
   --maxw: 1180px;
@@ -77,11 +77,21 @@ h2,
 h3,
 h4 {
   margin: 0;
-  font-family: var(--f-display);
+  /* Md (Futura Md BT) is the default for headings/most text; the heavy
+     Hv (Futura Hv BT) is reserved for the big display headlines below. */
+  font-family: var(--f-body);
   font-weight: 400;
   line-height: 1.04;
   font-optical-sizing: auto;
   text-wrap: balance;
+}
+/* big display headlines stay in the heavy Futura Hv BT */
+.hero h1,
+.s-title,
+.catalog-head h2,
+.catalog-intro h2,
+.contact .anay h2 {
+  font-family: var(--f-display);
 }
 p {
   margin: 0;
@@ -452,11 +462,13 @@ html[data-grain="on"]::after {
   color: var(--cacao);
 }
 .hero h1 {
-  font-size: clamp(44px, 9vw, 118px);
+  /* one line: "MISKI WARMI" — sized to the viewport width so it never wraps */
+  font-size: clamp(34px, 13vw, 132px);
   color: var(--cacao);
   letter-spacing: -0.02em;
   line-height: 0.92;
   margin-top: 0.08em;
+  white-space: nowrap;
 }
 .hero .tagline {
   font-family: var(--f-body);
@@ -939,18 +951,14 @@ html[data-grain="on"]::after {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* 4-up on desktop, 2-up on mobile (owner's spec) */
+  grid-template-columns: repeat(4, 1fr);
   gap: clamp(20px, 2.4vw, 30px);
   margin-top: 46px;
 }
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 560px) {
-  .grid {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -1075,202 +1083,6 @@ html[data-grain="on"]::after {
   border: 1px solid color-mix(in oklab, var(--cacao) 18%, transparent);
 }
 
-/* —— product carousel (bounded horizontal slider) —— */
-.pcar {
-  margin-top: clamp(34px, 5vw, 56px);
-}
-.pcar-view {
-  overflow: hidden;
-  border-radius: var(--radius);
-  outline: none;
-}
-.pcar-view:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 55%, transparent);
-}
-.pcar-track {
-  display: flex;
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
-  will-change: transform;
-}
-.pcar-slide {
-  flex: 0 0 100%;
-  min-width: 100%;
-  padding: 14px;
-}
-.pcar-slide .product {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(28px, 5vw, 70px);
-  align-items: center;
-}
-.pcar .frame.tall {
-  aspect-ratio: auto;
-  height: min(60vh, 540px);
-}
-.pcar .frame {
-  box-shadow: 0 16px 36px -22px rgba(44, 24, 16, 0.55);
-}
-.pcar .s-title {
-  font-size: clamp(30px, 4vw, 50px);
-}
-@media (max-width: 840px) {
-  .pcar-slide .product {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .pcar .frame.tall {
-    height: 44vh;
-  }
-}
-
-/* arrows (live in the control bar below the slides) */
-.pcar-arrow {
-  flex: none;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 0;
-  background: var(--cacao);
-  color: var(--cream);
-  font-size: 24px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-  transition:
-    transform 0.25s,
-    background 0.25s,
-    color 0.25s,
-    opacity 0.25s;
-}
-.pcar-arrow:hover:not(:disabled) {
-  transform: scale(1.08);
-  background: var(--accent);
-  color: var(--cacao);
-}
-.pcar-arrow:disabled {
-  opacity: 0.26;
-  cursor: default;
-}
-
-/* format pill + buy button */
-.pcar-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  margin-top: 26px;
-}
-.pcar-foot .fmt {
-  margin-top: 0;
-}
-.pbuy {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  background: var(--accent);
-  color: var(--cacao);
-  font-family: var(--f-body);
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  font-size: 13.5px;
-  padding: 12px 21px;
-  border-radius: 999px;
-  transition:
-    transform 0.25s,
-    box-shadow 0.25s,
-    gap 0.25s;
-}
-.pbuy:hover {
-  transform: translateY(-2px);
-  gap: 13px;
-  box-shadow: 0 16px 32px -14px var(--accent);
-}
-/* base size for inline SVG icons; .cblock overrides opacity/size below */
-.ico {
-  width: 18px;
-  height: 18px;
-  flex: none;
-}
-.pbuy .ico {
-  width: 17px;
-  height: 17px;
-}
-
-/* control bar: prev — segmented progress — next */
-.pcar-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  margin-top: 32px;
-}
-.pcar-bars {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1 1 auto;
-  max-width: 620px;
-}
-.pcar-bar {
-  position: relative;
-  flex: 1 1 0;
-  height: 5px;
-  border-radius: 999px;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  background: color-mix(in oklab, var(--cacao) 14%, transparent);
-  overflow: hidden;
-  transition: background 0.25s;
-}
-.pcar-bar:hover {
-  background: color-mix(in oklab, var(--accent) 45%, transparent);
-}
-.pcar-bar.active {
-  background: color-mix(in oklab, var(--cacao) 22%, transparent);
-}
-.pcar-bar .fill {
-  position: absolute;
-  inset: 0;
-  width: 0;
-  background: var(--accent);
-  border-radius: 999px;
-}
-/* the active segment fills over the autoplay interval, synced to the timer */
-.pcar-bar.active .fill {
-  animation: pcar-fill 5000ms linear forwards;
-}
-.pcar-bar.active.is-paused .fill {
-  animation-play-state: paused;
-}
-@keyframes pcar-fill {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-@media (max-width: 560px) {
-  .pcar-controls {
-    gap: 12px;
-  }
-  .pcar-arrow {
-    width: 42px;
-    height: 42px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pcar-track {
-    transition: none;
-  }
-  .pcar-bar.active .fill {
-    animation: none;
-    width: 100%;
-  }
-}
-
 /* —— card: editorial (default) —— */
 .card {
   background: var(--white);
@@ -1374,7 +1186,7 @@ html[data-grain="on"]::after {
   letter-spacing: -0.01em;
 }
 .card .psub {
-  font-family: var(--f-display);
+  font-family: var(--f-body);
   font-style: italic;
   font-size: 15px;
   opacity: 0.7;
@@ -1385,17 +1197,81 @@ html[data-grain="on"]::after {
   line-height: 1.55;
   opacity: 0.78;
   margin-top: 6px;
+  /* collapsed: clamp the description to 3 lines until the card is opened */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card.is-open .pdesc {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
+}
+/* extra content (ingredients + benefits) — collapses with a height animation */
+.card-extra {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.4s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.3s ease;
+  opacity: 0;
+}
+.card.is-open .card-extra {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.card-extra > .card-extra-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 .card .ingr {
   font-size: 12px;
-  font-style: italic;
   line-height: 1.5;
-  opacity: 0.6;
-  margin-top: 2px;
+  opacity: 0.72;
+  margin-top: 10px;
+}
+.card .ingr b {
+  font-weight: 600;
+  opacity: 0.95;
+}
+/* "Ver más / Ver menos" toggle */
+.card-toggle {
+  align-self: flex-start;
+  margin-top: 12px;
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  cursor: pointer;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--accent) 70%, var(--cacao));
+  transition: color 0.2s;
+}
+.card-toggle:hover {
+  color: var(--accent);
+}
+.card-toggle:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 60%, transparent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+/* footer row: format pill + WhatsApp buy button */
+.card-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .card .fmt {
-  margin-top: auto;
-  padding-top: 14px;
+  margin: 0;
 }
 .card .fmt span {
   display: inline-block;
@@ -1407,6 +1283,34 @@ html[data-grain="on"]::after {
   padding: 6px 13px;
   border-radius: 999px;
   border: 1px solid color-mix(in oklab, var(--cacao) 18%, transparent);
+}
+/* WhatsApp buy button (per product) */
+.pbuy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: var(--cacao);
+  font-family: var(--f-body);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: 12.5px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s,
+    gap 0.25s;
+}
+.pbuy:hover {
+  transform: translateY(-2px);
+  gap: 11px;
+  box-shadow: 0 14px 26px -14px var(--accent);
+}
+.pbuy .ico {
+  width: 16px;
+  height: 16px;
+  flex: none;
 }
 /* infusion benefits icons */
 .benefits {
@@ -1664,6 +1568,47 @@ html[data-grain="on"]::after {
   background: var(--cacao-deep);
   text-align: center;
   padding: 54px var(--gutter) 40px;
+}
+
+/* =========================================================
+   FLOATING WHATSAPP BUTTON (bottom-right, brand pink)
+   ========================================================= */
+.wa-float {
+  position: fixed;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  z-index: 900;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--pink);
+  color: var(--cacao);
+  box-shadow: 0 10px 26px -8px rgba(44, 24, 16, 0.55);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.25s;
+}
+.wa-float:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 16px 34px -10px rgba(44, 24, 16, 0.6);
+}
+.wa-float:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--pink) 70%, var(--cacao));
+}
+.wa-float .ico {
+  width: 30px;
+  height: 30px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-float {
+    transition: none;
+  }
+  .wa-float:hover {
+    transform: none;
+  }
 }
 .footer .mark {
   font-size: 40px;
